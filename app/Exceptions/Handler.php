@@ -93,19 +93,22 @@ class Handler extends ExceptionHandler
 
     private function genericResponse(Throwable $exception)
     {
-        return $this->responseError('',
+        return $this->responseError($this->getMessage($exception),
             $this->convertExceptionToArray($exception),
             $this->getHeaders($exception),
             $this->getStatusCode($exception));
     }
 
+    private function getMessage(Throwable $exception)
+    {
+        $statusCode = $this->getStatusCode($exception);
+
+        return $exception->getMessage() ?: sprintf("%d - %s", $statusCode, __("http_errors.$statusCode"));
+    }
+
     protected function convertExceptionToArray(Throwable $exception) : array
     {
         $responses['code'] = $exception instanceof ApiErrorException ? $exception->getApiCode() : $exception->getCode();
-
-        $statusCode = $this->getStatusCode($exception);
-
-        $responses['message'] = $exception->getMessage() ?: sprintf("%d - %s", $statusCode, __("http_errors.$statusCode"));
 
         if ($exception instanceof ValidationException) {
             $responses['errors'] = $exception->errors();
