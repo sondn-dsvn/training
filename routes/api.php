@@ -14,3 +14,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::post('/login', 'AuthController@login')->name('login');

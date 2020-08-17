@@ -8,4 +8,8 @@ use App\Traits\ApiResponsive;
 class BaseController extends Controller
 {
     use ApiResponsive;
+
+    public function __construct()
+    {
+    }
 }

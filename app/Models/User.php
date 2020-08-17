@@ -15,6 +15,8 @@ class User extends BaseModel implements
 {
     use Authenticatable, Authorizable, HasApiTokens, Notifiable;
 
+    const AVATAR_DEFAULT = 'https://ramcotubular.com/wp-content/uploads/default-avatar.jpg';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -31,5 +33,9 @@ class User extends BaseModel implements
      */
     protected $hidden = [
         'password', 'remember_token',
+    ];
+
+    protected $attributes = [
+        'avatar' => self::AVATAR_DEFAULT,
     ];
 }
