@@ -22,4 +22,7 @@ class AuthController extends BaseController
 
         return $this->responseSuccess(__('auth.login-success'), $response);
     }
+    public function formLogin() {
+        return view('auth/login');
+    }
 }
