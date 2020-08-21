@@ -2,6 +2,7 @@
 
 
 namespace App\Services;
+
 use App\Models\Role;
 use App\Models\User;
 use App\Services\Interfaces\EmployeeServiceInterface;
@@ -17,5 +18,21 @@ class EmployeeService extends BaseService implements EmployeeServiceInterface
         })->paginate();
 
         return $employees;
+    }
+
+    public function store($request)
+    {
+        $getRequest = [
+            'username' => $request->username,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'avatar' => $request->avatar,
+            'description' => $request->description,
+            'leader_id' => $request->leader_id,
+        ];
+        $roleId = $request->role_id;
+        $user = User::create($getRequest);
+        $user->roles()->attach($roleId);
+        return $user;
     }
 }

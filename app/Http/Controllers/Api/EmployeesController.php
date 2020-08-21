@@ -7,14 +7,17 @@ use App\Services\Interfaces\EmployeeServiceInterface;
 
 class EmployeesController extends BaseController
 {
-    public function __construct(EmployeeServiceInterface $employeeService){
+    public function __construct(EmployeeServiceInterface $employeeService)
+    {
         parent::__construct();
         $this->employeeService = $employeeService;
     }
 
-    public function index(){
-        $response = $this->employeeService->getEmployees();
-        return $this->responseWithPagination(__('employee.show_succeed'),$response);
+    public function store(CreateEmployeeRequest $request)
+    {
+        $this->employeeService->store($request);
+        return $this->responseSuccess(__('employee.store_succeed'), [], [], [], 200);
+
     }
 
 }
