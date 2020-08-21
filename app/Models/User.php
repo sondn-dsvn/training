@@ -16,14 +16,14 @@ class User extends BaseModel implements
     use Authenticatable, Authorizable, HasApiTokens, Notifiable;
 
     const AVATAR_DEFAULT = 'https://ramcotubular.com/wp-content/uploads/default-avatar.jpg';
-
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
+
     protected $fillable = [
-        'name', 'email', 'password',
+        'username', 'email', 'password',
     ];
 
     /**

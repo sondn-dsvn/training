@@ -15,3 +15,6 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('/login', 'AuthController@login')->name('login');
+
+//employees management
+Route::get('/employees', 'EmployeesController@index')->name('api.employee.index');

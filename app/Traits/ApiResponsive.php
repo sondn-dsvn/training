@@ -24,6 +24,21 @@ trait ApiResponsive
         return $this->response('Error', $message, [], $meta, $headers, $status);
     }
 
+    public function responseWithPagination($message, $paginations)
+    {
+        $meta = [
+            'total' => $paginations->total(),
+            'lastPage' => $paginations->lastPage(),
+            'currentPage' => $paginations->currentPage(),
+            'path' => $paginations->path(),
+            'nextPageUrl' => $paginations->nextPageUrl(),
+            'prePageUrl' => $paginations->previousPageUrl(),
+            'perPage' => $paginations->perPage(),
+        ];
+        $data = $paginations->items();
+        return $this->responseSuccess($message, $data, $meta);
+    }
+
     private function response(string $type = "",
                              string $message = "",
                              array $data = [],
