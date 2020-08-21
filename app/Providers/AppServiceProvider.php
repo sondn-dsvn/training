@@ -10,6 +10,7 @@ class AppServiceProvider extends ServiceProvider
 {
     private $applicationServices = [
         Interfaces\AuthServiceInterface::class => Services\AuthService::class,
+        Interfaces\EmployeeServiceInterface::class => Services\EmployeeService::class,
     ];
 
     /**
