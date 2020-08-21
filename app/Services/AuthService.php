@@ -6,7 +6,7 @@ namespace App\Services;
 
 use App\Exceptions\ApiErrorException;
 use App\Http\Requests\Api\Auth\LoginRequest;
-use App\Models\User;
+use App\Http\Resources\UserResource;
 use App\Services\Interfaces\AuthServiceInterface;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -23,7 +23,7 @@ class AuthService extends BaseService implements AuthServiceInterface
             throw new ApiErrorException(__('auth.failed'));
         }
 
-        $user = Auth::guard('web')->user();
+        $user = Auth::guard('web')->user()->with('roles')->firstOrFail();
         $tokenResult = $user->createToken('Personal Access Token');
         $token = $tokenResult->token;
 
@@ -33,15 +33,7 @@ class AuthService extends BaseService implements AuthServiceInterface
             }
         }
 
-        return [
-            'username' => $user->username,
-            'email' => $user->email,
-            'avatar' => $user->avatar ?? User::AVATAR_DEFAULT,
-            'description' => $user->description ?? '',
-            'token_type' => 'Bearer',
-            'access_token' => $tokenResult->accessToken,
-            'expires_at' => Carbon::parse($token->expires_at)->toDateTimeString(),
-        ];
+        return (new UserResource($user))->toArray(null, $tokenResult, $token);
     }
 
     private function changeExpireTime(Token $token, int $periodDays = 1)
