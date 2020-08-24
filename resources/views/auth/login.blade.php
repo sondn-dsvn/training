@@ -8,7 +8,7 @@
                 <div class="card-header">{{ __('Login') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('login') }}">
+                    <form>
                         @csrf
 
                         <div class="form-group row">
@@ -46,14 +46,16 @@
 
                                     <label class="form-check-label" for="remember">
                                         {{ __('Remember Me') }}
+
                                     </label>
                                 </div>
                             </div>
                         </div>
 
+
                         <div class="form-group row mb-0">
                             <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="button" class="btn btn-primary" id="button-login">
                                     {{ __('Login') }}
                                 </button>
 
@@ -70,4 +72,28 @@
         </div>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script>
+    $(document).ready(function(){
+        $('#button-login').click(function() {
+            var email = $('#email').val();
+            var password = $('#password').val();
+            var data = {'email': email, 'password': password};
+            fetch('/api/login', {
+                    method: "POST",
+                    body: JSON.stringify(data),
+                    headers: {
+                        'Content-Type': 'application/json'
+                        // 'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if(data.type == "Success") {
+                        window.location.href = "http://127.0.0.1:8000/home";
+                    }
+                });
+        })
+    });
+</script>
 @endsection
